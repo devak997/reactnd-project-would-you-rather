@@ -2,7 +2,9 @@ import React, { Fragment } from 'react';
 import { NavLink } from 'react-router-dom';
 import { connect } from 'react-redux';
 
-const Navbar = ({ authedUser, user }) => {
+import { logoutUser } from '../actions/authedUser';
+
+const Navbar = ({ authedUser, user, dispatch }) => {
     return (
         <div className="ui inverted segment" style={{ borderRadius: 0, marginBottom: 0 }}>
             <div className="ui inverted secondary small menu">
@@ -29,7 +31,7 @@ const Navbar = ({ authedUser, user }) => {
                                     {user.name}
                                 </div>
                             </div>
-                            <div className='item'>
+                            <div className='item' onClick={() => dispatch(logoutUser())}>
                                 Logout
                             </div>
                         </div>
