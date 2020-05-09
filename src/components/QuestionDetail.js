@@ -67,7 +67,7 @@ class QuestionDetail extends Component {
 }
 
 function mapStateToProps({ users, questions, authedUser }, { match }) {
-    const { id, optionOne, optionTwo, author } = questions[match.params.id];
+    const { id, optionOne, optionTwo, author } = questions[match.params.question_id];
     const user = users[author];
     const optionOneVotes = optionOne.votes;
     const optionTwoVotes = optionTwo.votes;
