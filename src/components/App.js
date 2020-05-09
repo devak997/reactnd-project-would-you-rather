@@ -9,6 +9,7 @@ import HomePage from './HomePage';
 import { Route, Switch } from 'react-router-dom';
 import QuestionDetail from './QuestionDetail';
 import NewQuestion from './NewQuestion';
+import Leaderboard from './Leaderboard';
 
 class App extends Component {
     componentDidMount() {
@@ -29,6 +30,7 @@ class App extends Component {
                                 <Route exact path='/' component={HomePage} />
                                 <Route path='/question/:question_id' component={QuestionDetail} />
                                 <Route path='/add' component={NewQuestion} />
+                                <Route path='/leaderboard' component={Leaderboard}/>
                             </Switch>
                         )}
                 </div>
