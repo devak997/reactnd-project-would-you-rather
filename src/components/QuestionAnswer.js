@@ -1,7 +1,15 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
+import { handleAnswerQuestion } from '../actions/shared';
 
 class QuestionAnswer extends Component {
+    handleOptOneClick = () => {
+        this.props.dispatch(handleAnswerQuestion(this.props.id, 'optionOne', this.props.authedUser));
+    }
+    handleOptTwoClick = () => {
+        this.props.dispatch(handleAnswerQuestion(this.props.id, 'optionTwo', this.props.authedUser));
+    }
     render() {
         const {
             optionOneText,
@@ -9,9 +17,9 @@ class QuestionAnswer extends Component {
             optionOnePercentage,
             optionTwoPercentage,
             user,
-            isAnswered
+            isAnswered,
+            answer
         } = this.props;
-        console.log("Is answered", isAnswered);
         return (
             <div className="ui centered card" style={{ marginTop: '100px', width: '500px' }}>
                 <div className="content">
@@ -27,14 +35,14 @@ class QuestionAnswer extends Component {
                     <div className="ui two buttons">
                         {!isAnswered
                             ? (<div className="ui two buttons">
-                                <div className="ui basic green button">{optionOneText}</div>
-                                <div className="ui basic blue button">{optionTwoText}</div>
+                                <div className="ui basic green button" onClick={this.handleOptOneClick}>{optionOneText}</div>
+                                <div className="ui basic blue button" onClick={this.handleOptTwoClick}>{optionTwoText}</div>
                             </div>)
                             : (
                                 <div className=''>
                                     <div className="ui labeled fluid button" tabIndex="0">
                                         <div className="ui green right pointing label">
-                                            {`${optionOnePercentage}%`}
+                                            {`${optionOnePercentage}% ${answer === 'optionOne' ? ' (Your Response)' : ''}`}
                                         </div>
                                         <div className="ui  button disabled">
                                             {optionOneText}
@@ -42,7 +50,7 @@ class QuestionAnswer extends Component {
                                     </div>
                                     <div className="ui labeled fluid button " tabIndex="0">
                                         <div className="ui right pointing blue label">
-                                            {`${optionTwoPercentage}%`}
+                                            {`${optionTwoPercentage}% ${answer === 'optionTwo' ? ' (Your Response)' : ''}`}
                                         </div>
                                         <div className="ui secondary button disabled">
                                             {optionTwoText}
@@ -64,21 +72,20 @@ function mapStateToProps({ users, questions, authedUser }, { match }) {
     const user = users[author];
     const optionOneVotes = optionOne.votes;
     const optionTwoVotes = optionTwo.votes;
-    const isAnswered = optionOneVotes.concat(optionTwoVotes).includes(authedUser);
-    const totalVotes = optionOneVotes.length + optionTwoVotes.length;
-    const optionOnePercentage = (optionOneVotes.length / (totalVotes)) * 100;
-    const optionTwoPercentage = (optionTwoVotes.length / (totalVotes)) * 100
+    const totalVotesLen = optionOneVotes.length + optionTwoVotes.length;
     return {
         id,
         optionOneText: optionOne.text,
         optionTwoText: optionTwo.text,
-        optionOnePercentage,
-        optionTwoPercentage,
+        optionOnePercentage: ((optionOneVotes.length / (totalVotesLen)) * 100).toFixed(2),
+        optionTwoPercentage: ((optionTwoVotes.length / (totalVotesLen)) * 100).toFixed(2),
         user,
-        isAnswered
+        isAnswered: Object.keys(users[authedUser].answers).includes(id),
+        authedUser,
+        answer: users[authedUser].answers[id]
     };
 
 }
 
 
-export default connect(mapStateToProps)(QuestionAnswer);
+export default withRouter(connect(mapStateToProps)(QuestionAnswer));

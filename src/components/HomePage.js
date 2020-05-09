@@ -30,10 +30,10 @@ class HomePage extends Component {
     }
 }
 
-function mapStateToProps({ questions, authedUser }) {
+function mapStateToProps({ questions, authedUser, users }) {
     const question_ids = Object.keys(questions).sort((a, b) => questions[b].timestamp - questions[a].timestamp);
-    const answered = question_ids.filter(id => questions[id].optionOne.votes.concat(questions[id].optionTwo.votes).includes(authedUser));
-    const unanswered = question_ids.filter(id => !questions[id].optionOne.votes.concat(questions[id].optionTwo.votes).includes(authedUser));
+    const answered = question_ids.filter(id => Object.keys(users[authedUser].answers).includes(id));
+    const unanswered = question_ids.filter(id => !Object.keys(users[authedUser].answers).includes(id));
     return {
         answered,
         unanswered,

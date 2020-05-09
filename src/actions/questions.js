@@ -6,3 +6,4 @@ export function receiveQuestions(questions) {
         questions
     }
 }
+
