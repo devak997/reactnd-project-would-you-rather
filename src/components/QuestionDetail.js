@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { handleAnswerQuestion } from '../actions/shared';
+import Error from './Error';
 
 class QuestionDetail extends Component {
     handleOptOneClick = () => {
@@ -17,18 +18,20 @@ class QuestionDetail extends Component {
             optionTwoPercentage,
             user,
             isAnswered,
-            answer
+            answer,
+            optionOneVotesCount,
+            optionTwoVotesCount,
+            error
         } = this.props;
+        if(error) {
+            return <Error message="Poll doesn't exist!"/>
+        }
         return (
             <div className="ui centered card" style={{ marginTop: '100px', width: '500px' }}>
                 <div className="content">
                     <img className="right floated mini ui image" src={user.avatarURL} alt='avatar' />
-                    <div className="header">
-                        {`Asked by, ${user.name},`}
-                    </div>
-                    <div className="description">
-                        Would you rather?
-                    </div>
+                    <div className="header">{`Asked by, ${user.name},`}</div>
+                    <div className="description">Would you rather?</div>
                 </div>
                 <div className="extra content">
                     <div className="ui two buttons">
@@ -40,19 +43,23 @@ class QuestionDetail extends Component {
                             : (
                                 <div className=''>
                                     <div className="ui labeled fluid button" tabIndex="0">
-                                        <div className="ui green right pointing label">
-                                            {`${optionOnePercentage}% ${answer === 'optionOne' ? ' (Your Response)' : ''}`}
+                                        <div className="ui green right pointing label">{`${optionOnePercentage}%`}</div>
+                                        <div className="ui button disabled">
+                                            {`${optionOneText} ${answer === 'optionOne' ? ' (Your Response)' : ''} `}
                                         </div>
-                                        <div className="ui  button disabled">
-                                            {optionOneText}
+                                        <div className="ui green left pointing label">
+                                            {`${optionOneVotesCount}`}
                                         </div>
                                     </div>
                                     <div className="ui labeled fluid button " tabIndex="0">
                                         <div className="ui right pointing blue label">
-                                            {`${optionTwoPercentage}% ${answer === 'optionTwo' ? ' (Your Response)' : ''}`}
+                                            {`${optionTwoPercentage}%`}
                                         </div>
                                         <div className="ui secondary button disabled">
-                                            {optionTwoText}
+                                            {`${optionTwoText} ${answer === 'optionTwo' ? ' (Your Response)' : ''}`}
+                                        </div>
+                                        <div className="ui left pointing blue label">
+                                            {`${optionTwoVotesCount}`}
                                         </div>
                                     </div>
                                 </div>
@@ -67,21 +74,28 @@ class QuestionDetail extends Component {
 }
 
 function mapStateToProps({ users, questions, authedUser }, { match }) {
+    if(!questions[match.params.question_id]) {
+        return {
+            error: true  
+        }
+    }
     const { id, optionOne, optionTwo, author } = questions[match.params.question_id];
     const user = users[author];
-    const optionOneVotes = optionOne.votes;
-    const optionTwoVotes = optionTwo.votes;
-    const totalVotesLen = optionOneVotes.length + optionTwoVotes.length;
+    const optionOneVotesCount = optionOne.votes.length;
+    const optionTwoVotesCount = optionTwo.votes.length;
+    const totalVotesCount = optionOneVotesCount + optionTwoVotesCount;
     return {
         id,
         optionOneText: optionOne.text,
         optionTwoText: optionTwo.text,
-        optionOnePercentage: ((optionOneVotes.length / (totalVotesLen)) * 100).toFixed(2),
-        optionTwoPercentage: ((optionTwoVotes.length / (totalVotesLen)) * 100).toFixed(2),
+        optionOnePercentage: ((optionOneVotesCount / (totalVotesCount)) * 100).toFixed(1),
+        optionTwoPercentage: ((optionTwoVotesCount / (totalVotesCount)) * 100).toFixed(1),
         user,
         isAnswered: Object.keys(users[authedUser].answers).includes(id),
         authedUser,
-        answer: users[authedUser].answers[id]
+        answer: users[authedUser].answers[id],
+        optionOneVotesCount,
+        optionTwoVotesCount
     };
 
 }

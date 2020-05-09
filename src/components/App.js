@@ -10,6 +10,7 @@ import { Route, Switch } from 'react-router-dom';
 import QuestionDetail from './QuestionDetail';
 import NewQuestion from './NewQuestion';
 import Leaderboard from './Leaderboard';
+import Error from './Error';
 
 class App extends Component {
     componentDidMount() {
@@ -31,6 +32,7 @@ class App extends Component {
                                 <Route path='/question/:question_id' component={QuestionDetail} />
                                 <Route path='/add' component={NewQuestion} />
                                 <Route path='/leaderboard' component={Leaderboard}/>
+                                <Route render={() => <Error message="Page doesn't exits!"/>} />
                             </Switch>
                         )}
                 </div>

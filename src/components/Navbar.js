@@ -1,10 +1,14 @@
 import React, { Fragment } from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 import { logoutUser } from '../actions/authedUser';
 
-const Navbar = ({ authedUser, user, dispatch }) => {
+const Navbar = ({ authedUser, user, dispatch, history }) => {
+    const handleLogoutUser = () => {
+        dispatch(logoutUser());
+        history.push('/');
+    }
     return (
         <div className="ui inverted segment" style={{ borderRadius: 0, marginBottom: 0 }}>
             <div className="ui inverted secondary small menu">
@@ -31,9 +35,9 @@ const Navbar = ({ authedUser, user, dispatch }) => {
                                     {user.name}
                                 </div>
                             </div>
-                            <div className='item' onClick={() => dispatch(logoutUser())}>
+                            <button className='item' onClick={handleLogoutUser}>
                                 Logout
-                            </div>
+                            </button>
                         </div>
                     </Fragment>
                 )}
@@ -51,4 +55,4 @@ function mapStateToProps({ users }, { authedUser }) {
     return {};
 }
 
-export default connect(mapStateToProps)(Navbar);
+export default withRouter(connect(mapStateToProps)(Navbar));

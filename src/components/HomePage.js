@@ -18,6 +18,9 @@ class HomePage extends Component {
                         Answered Questions
                     </div>
                 </div>
+                {ids.length === 0 && (
+                    <p>It's Lonely here!</p>
+                )}
                 <div className='ui very relaxed middle aligned divided large list'>
                     {ids.map(question_id => {
                         return (
