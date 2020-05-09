@@ -5,15 +5,20 @@ const Leaderboard = ({ usersList }) => {
     return (
         <ol className="ui very relaxed divided centered list">
             {usersList.map(user => {
+                const noOfQuestions = user.questions.length;
+                const noOfAnswers = Object.keys(user.answers).length;
                 return (
                     <li className="item" key={user.id}>
-                        <img className="ui avatar image" src={user.avatarURL} />
+                        <img className="ui avatar image" src={user.avatarURL} alt='avatar'/>
                         <div className="content">
-                            <a className="header">{user.name}</a>
+                            <div className="header">{user.name}</div>
                             <div className="description">
-                                {`No. of questions: ${user.questions.length} |
-                                No. of answers: ${Object.keys(user.answers).length}`}
+                                {`No. of questions asked: ${noOfQuestions} |
+                                No. of questions answered: ${noOfAnswers}`}
                             </div>
+                        </div>
+                        <div className="right floated content">
+                            <div>Score: {noOfQuestions + noOfAnswers}</div>
                         </div>
                     </li>
                 );
