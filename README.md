@@ -41,4 +41,5 @@ A new browser window will be automatically opened in your default browser. If it
 - [React Training/React Router](https://reacttraining.com/react-router/web/api/BrowserRouter)
 - [React API](https://facebook.github.io/react/docs/react-api.html)
 - [Redux](https://redux.js.org/introduction/getting-started)
+
 _This project is licensed under the terms of the MIT license._
