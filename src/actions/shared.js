@@ -1,10 +1,8 @@
 import { showLoading, hideLoading } from 'react-redux-loading';
-import { _getUsers, _getQuestions, _saveQuestionAnswer } from '../utils/_DATA';
+import { _getUsers, _getQuestions, _saveQuestionAnswer, _saveQuestion } from '../utils/_DATA';
 import { receiveUsers } from './users';
-import { receiveQuestions } from './questions';
+import { receiveQuestions, answerQuestion, unanswerQuestion, addQuestion } from './questions';
 
-export const ANSWER_QUESTION = 'ANSWER_QUESTION'
-export const UNANSWER_QUESTION = 'UNANSWER_QUESTION'
 
 export function handleInitialData() {
     return (dispatch) => {
@@ -18,26 +16,10 @@ export function handleInitialData() {
     };
 }
 
-export function answerQuestion(qid, answer, authedUser) {
-    return {
-        type: ANSWER_QUESTION,
-        qid,
-        answer,
-        authedUser
-    }
-}
 
-export function unanswerQuestion(id, authedUser) {
-    return {
-        type: UNANSWER_QUESTION,
-        id,
-        authedUser
-    };
-}
 
 export function handleAnswerQuestion(qid, answer, authedUser) {
     return (dispatch) => {
-        console.log("authed user:", authedUser);
         dispatch(showLoading());
         dispatch(answerQuestion(qid, answer, authedUser));
         return _saveQuestionAnswer({ authedUser, qid, answer })
@@ -47,6 +29,19 @@ export function handleAnswerQuestion(qid, answer, authedUser) {
                 dispatch(unanswerQuestion(qid, authedUser));
                 dispatch(hideLoading());
             })
+
+    }
+}
+
+export function handleAddQuestion(optionOneText, optionTwoText, author) {
+    return (dispatch) => {
+        dispatch(showLoading());
+        return _saveQuestion({optionOneText, optionTwoText, author}).then(question => {
+            dispatch(addQuestion(question));
+            dispatch(hideLoading());
+        })
+        .catch(err => console.log(err));
+
 
     }
 }

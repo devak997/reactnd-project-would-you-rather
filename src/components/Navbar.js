@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react';
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 const Navbar = ({ authedUser, user }) => {
@@ -11,15 +11,15 @@ const Navbar = ({ authedUser, user }) => {
                 </div>
                 {(authedUser !== null && authedUser !== '') && (
                     <Fragment>
-                        <Link className="active item" to='/'>
+                        <NavLink className="item" exact activeClassName='active' to='/'>
                             Home
-                        </Link>
-                        <Link className="item" to='/add'>
+                        </NavLink>
+                        <NavLink className="item" activeClassName='active' to='/new'>
                             New Question
-                        </Link>
-                        <Link className="item" to='/leaderboard'>
+                        </NavLink>
+                        <NavLink className="item" activeClassName='active' to='/leaderboard'>
                             Leaderboard
-                        </Link>
+                        </NavLink>
                         <div className='right menu'>
                             <div className='item'>
                                 <div className="ui avatar image">

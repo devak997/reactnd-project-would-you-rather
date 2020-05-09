@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
 import { handleAnswerQuestion } from '../actions/shared';
 
-class QuestionAnswer extends Component {
+class QuestionDetail extends Component {
     handleOptOneClick = () => {
         this.props.dispatch(handleAnswerQuestion(this.props.id, 'optionOne', this.props.authedUser));
     }
@@ -88,4 +87,4 @@ function mapStateToProps({ users, questions, authedUser }, { match }) {
 }
 
 
-export default withRouter(connect(mapStateToProps)(QuestionAnswer));
+export default connect(mapStateToProps)(QuestionDetail);

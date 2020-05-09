@@ -7,7 +7,8 @@ import LoginPage from './LoginPage';
 import Navbar from './Navbar';
 import HomePage from './HomePage';
 import { Route, Switch } from 'react-router-dom';
-import QuestionAnswer from './QuestionAnswer';
+import QuestionDetail from './QuestionDetail';
+import NewQuestion from './NewQuestion';
 
 class App extends Component {
     componentDidMount() {
@@ -26,7 +27,8 @@ class App extends Component {
                         : (
                             <Switch>
                                 <Route exact path='/' component={HomePage} />
-                                <Route path='/question/:id' component={QuestionAnswer}/>
+                                <Route path='/question/:id' component={QuestionDetail} />
+                                <Route path='/new' component={NewQuestion} />
                             </Switch>
                         )}
                 </div>
