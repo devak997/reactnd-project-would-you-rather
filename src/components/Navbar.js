@@ -14,7 +14,7 @@ const Navbar = ({ authedUser, user }) => {
                         <NavLink className="item" exact activeClassName='active' to='/'>
                             Home
                         </NavLink>
-                        <NavLink className="item" activeClassName='active' to='/new'>
+                        <NavLink className="item" activeClassName='active' to='/add'>
                             New Question
                         </NavLink>
                         <NavLink className="item" activeClassName='active' to='/leaderboard'>
